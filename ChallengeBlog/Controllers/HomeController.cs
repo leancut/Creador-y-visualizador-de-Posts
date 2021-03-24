@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 
@@ -14,7 +15,6 @@ namespace ChallengeBlog.Controllers
         public ActionResult Index()
         {
             challengePostContext db = new challengePostContext();
-
             return View(db.Post.ToList());
         }
 
@@ -26,14 +26,30 @@ namespace ChallengeBlog.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Agregar_Post(Posts s)
+        public ActionResult Agregar_Post(Posts s, HttpPostedFileBase upload)
         {
+
             if (!ModelState.IsValid)
                 return View();
             try
             {
                 using (challengePostContext db = new challengePostContext())
                 {
+
+                    //agregar imagen
+
+                    if (upload != null && upload.ContentLength > 0)
+                    {
+                        
+                        using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                        {
+                            s.Imagen = reader.ReadBytes(upload.ContentLength);
+                        }
+                       
+                    }
+                    //
+
+
                     db.Post.Add(s);
                     db.SaveChanges();
                     return RedirectToAction("Index");
@@ -69,9 +85,9 @@ namespace ChallengeBlog.Controllers
             }
 
         }
-        [HttpPost]
+        [HttpPost, ActionName("Editar_Post")]
         [ValidateAntiForgeryToken]
-        public ActionResult Editar_Post(Posts s)
+        public ActionResult Editar_Post(Posts s, HttpPostedFileBase upload)
         {
             if (!ModelState.IsValid)
                 return View();
@@ -81,6 +97,18 @@ namespace ChallengeBlog.Controllers
             {
                 using (var db = new challengePostContext())
                 {
+                    //agregar imagen
+
+                    if (upload != null && upload.ContentLength > 0)
+                    {
+
+                        using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                        {
+                            s.Imagen = reader.ReadBytes(upload.ContentLength);
+                        }
+
+                    }
+                    //
 
                     Posts subj = db.Post.Find(s.ID);
                     subj.Titulo = s.Titulo;
@@ -102,5 +130,17 @@ namespace ChallengeBlog.Controllers
 
 
         }
+        public ActionResult Delete_Subject(int id)
+        {
+            using (var db = new challengePostContext())
+            {
+                Posts pst = db.Post.Where(a => a.ID == id).FirstOrDefault();
+                db.Post.Remove(pst);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+        }
+
+
     }
 }
