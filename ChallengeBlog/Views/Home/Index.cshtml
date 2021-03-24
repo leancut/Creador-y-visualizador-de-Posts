@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ChallengeBlog.Models.Posts>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<br />
+<br />
+<h1>POST CREADOS</h1>
+
+<br />
+<br />
+<div class="widewrapper main">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 blog-main">
+
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-6 col-sm-6">
+                            <article class=" blog-teaser">
+                                <header>
+                                    <img src="@Html.DisplayFor(modelItem => item.Imagen)" alt="A Cat">
+                                    <h3><a href="blog-detail.html">@Html.DisplayFor(modelItem => item.Titulo)</a></h3>
+                                    <span class="meta">@Html.DisplayFor(modelItem => item.FechaCreacion), @Html.DisplayFor(modelItem => item.Categoria)</span>
+                                    <hr>
+                                </header>
+                                <div class="body">
+
+                                    @Html.DisplayFor(modelItem => item.Contenido)
+                                </div>
+
+                                <div class="clearfix">
+                                    @Html.ActionLink("Detalles", "Detalles_Post", new { id = item.ID }) |
+                                    @Html.ActionLink("Delete", "Delete_Subject", new { id = item.ID })
+                                </div>
+                            </article>
+                        </div>
+                    }
+                </div>
+
+
+
+
+                <div class="paging">
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
