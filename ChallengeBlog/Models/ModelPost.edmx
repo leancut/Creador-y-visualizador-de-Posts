@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="challengePostModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="challengePostModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Posts">
           <Key>
             <PropertyRef Name="ID" />
@@ -15,15 +15,18 @@
           <Property Name="Imagen" Type="image" />
           <Property Name="Categoria" Type="nchar" MaxLength="10" />
           <Property Name="FechaCreacion" Type="date" />
+          <Property Name="Borrado" Type="int" />
         </EntityType>
         <EntityContainer Name="challengePostModelStoreContainer">
           <EntitySet Name="Posts" EntityType="Self.Posts" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="challengePostModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="challengePostContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Posts" EntityType="challengePostModel.Posts" />
+        </EntityContainer>
         <EntityType Name="Posts">
           <Key>
             <PropertyRef Name="ID" />
@@ -34,10 +37,8 @@
           <Property Name="Imagen" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="Categoria" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="FechaCreacion" Type="DateTime" Precision="0" />
+          <Property Name="Borrado" Type="Int32" />
         </EntityType>
-        <EntityContainer Name="challengePostContext" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Posts" EntityType="Self.Posts" />
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -47,12 +48,13 @@
           <EntitySetMapping Name="Posts">
             <EntityTypeMapping TypeName="challengePostModel.Posts">
               <MappingFragment StoreEntitySet="Posts">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
-                <ScalarProperty Name="Contenido" ColumnName="Contenido" />
-                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
-                <ScalarProperty Name="Categoria" ColumnName="Categoria" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="Categoria" ColumnName="Categoria" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+                <ScalarProperty Name="Contenido" ColumnName="Contenido" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

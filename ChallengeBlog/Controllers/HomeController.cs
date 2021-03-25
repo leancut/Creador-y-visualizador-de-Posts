@@ -15,7 +15,8 @@ namespace ChallengeBlog.Controllers
         public ActionResult Index()
         {
             challengePostContext db = new challengePostContext();
-            return View(db.Post.ToList());
+            List<Posts> list = db.Posts.Where(a => a.Borrado==0).ToList();
+            return View(list);
         }
 
         public ActionResult Agregar_Post()
@@ -49,8 +50,9 @@ namespace ChallengeBlog.Controllers
                     }
                     //
 
-
-                    db.Post.Add(s);
+                    s.FechaCreacion = DateTime.Now;
+                    s.Borrado = 0;
+                    db.Posts.Add(s);
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -69,7 +71,7 @@ namespace ChallengeBlog.Controllers
         {
             using (var db = new challengePostContext())
             {
-                Posts pos = db.Post.Where(a => a.ID == id).FirstOrDefault();
+                Posts pos = db.Posts.Where(a => a.ID == id).FirstOrDefault();
                
                 return View(pos);
             }
@@ -80,7 +82,7 @@ namespace ChallengeBlog.Controllers
         {
             using (var db = new challengePostContext())
             {
-                Posts pos = db.Post.Where(a => a.ID == id).FirstOrDefault();
+                Posts pos = db.Posts.Where(a => a.ID == id).FirstOrDefault();
                 return View(pos);
             }
 
@@ -110,11 +112,12 @@ namespace ChallengeBlog.Controllers
                     }
                     //
 
-                    Posts subj = db.Post.Find(s.ID);
+                    Posts subj = db.Posts.Find(s.ID);
                     subj.Titulo = s.Titulo;
                     subj.Contenido = s.Contenido;
                     subj.Imagen = s.Imagen;
                     subj.Categoria = s.Categoria;
+                    
                     subj.FechaCreacion = s.FechaCreacion;
                     db.SaveChanges();
                     return RedirectToAction("Index");
@@ -130,17 +133,18 @@ namespace ChallengeBlog.Controllers
 
 
         }
-        public ActionResult Delete_Subject(int id)
+        public ActionResult SoftDelete(int id)
         {
             using (var db = new challengePostContext())
             {
-                Posts pst = db.Post.Where(a => a.ID == id).FirstOrDefault();
-                db.Post.Remove(pst);
+                Posts pst = db.Posts.Where(a => a.ID == id).FirstOrDefault();
+                pst.Borrado=1;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
         }
+    }
+      
 
 
     }
-}

@@ -25,6 +25,6 @@ namespace ChallengeBlog.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Posts> Post { get; set; }
+        public virtual DbSet<Posts> Posts { get; set; }
     }
 }

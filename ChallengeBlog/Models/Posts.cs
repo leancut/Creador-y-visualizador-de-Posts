@@ -11,24 +11,15 @@ namespace ChallengeBlog.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Posts
     {
         public int ID { get; set; }
-
-        [Required]
-        [Display(Name ="Ingrese un titulo para el Post")]
         public string Titulo { get; set; }
-        [Required]
-        [Display(Name = "Escriba el contenido del Post")]
         public string Contenido { get; set; }
-        [Required]
-        [Display(Name = "Ingrese una imagen para el Post")]
         public byte[] Imagen { get; set; }
-        [Required]
-        [Display(Name = "Ingrese la categoría del Post")]
         public string Categoria { get; set; }
         public Nullable<System.DateTime> FechaCreacion { get; set; }
+        public Nullable<int> Borrado { get; set; }
     }
 }
